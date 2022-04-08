@@ -26,6 +26,14 @@ public class UserService {
 
 		savedUser.setFirstName(user.getFirstName());
 		savedUser.setLastName(user.getLastName());
+		savedUser.setDateOfBirth(user.getDateOfBirth());
+		savedUser.setEmail(user.getEmail());
+		savedUser.setMobilePhone(user.getMobilePhone());
+		savedUser.setHomePhone(user.getHomePhone());
+		savedUser.setAddressLine1(user.getAddressLine1());
+		savedUser.setAddressLine2(user.getAddressLine2());
+		savedUser.setState(user.getState());
+		savedUser.setZip(user.getZip());
 
 		userRepository.save(savedUser);
 	}

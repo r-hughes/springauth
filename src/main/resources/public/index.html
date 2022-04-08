@@ -14,18 +14,19 @@
 				document.getElementById("message").innerHTML = "Successfully registered new user =)";
 			} else {
 				document.getElementById("message").innerHTML = "Error adding new user =(";
+				return false;
 			}
 		};
 		var formData = new FormData(document.getElementById("myForm")); 
 		xhr.send(formData);
-		return false;
+		return true;
 	}
 	</script>
 </head>
 <body>
 	<iframe name="hidden"></iframe>
     <h1>Register Here:</h1>
-    <form id="myForm" target="hidden">
+    <form id="myForm" onsubmit="return submitForm();" target="hidden">
     	<table><tr>
         <td><label>First Name:</label></td><td><input type="text" name="firstName" required/></td>
         </tr><tr>
@@ -54,7 +55,7 @@
         <td><label>Zip Code:</label></td><td><input type="text" name="zip" required/></td>
         </tr></table>
         <br><br>
-        <input type="submit" onclick="submitForm();" value="Register"/>
+        <input type="submit" value="Register"/>
     </form>
     <br>
     <p><span id="message"></span></p>
