@@ -3,24 +3,25 @@
 	<meta charset="ISO-8859-1">
 	<title>Home Page</title>
 	<link type="text/css" rel="stylesheet" href="css/style.css">
+	<script>
+	function submitForm() {
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "/users"); 
+		xhr.onload = function(event) {
+			var status = event.target.status;
+			alert("Server responded with: " + status);
+			if (status < 400) {
+				document.getElementById("message").innerHTML = "Successfully registered new user =)";
+			} else {
+				document.getElementById("message").innerHTML = "Error adding new user =(";
+			}
+		};
+		var formData = new FormData(document.getElementById("myForm")); 
+		xhr.send(formData);
+		return false;
+	}
+	</script>
 </head>
-<script>
-function submitForm(){
-	var xhr = new XMLHttpRequest();
-	xhr.open("POST", "/users"); 
-	xhr.onload = function(event){
-		var status = event.target.status;
-	    // alert("Server responded with: " + status);
-		if (status < 400) {
-			document.getElementById("message").innerHTML = "Successfully registered new user =)";
-		} else {
-			document.getElementById("message").innerHTML = "Error adding new user =(";
-		}
-	};
-	var formData = new FormData(document.getElementById("myForm")); 
-	xhr.send(formData);
-}
-</script>
 <body>
 	<iframe name="hidden"></iframe>
     <h1>Register Here:</h1>
@@ -53,7 +54,7 @@ function submitForm(){
         <td><label>Zip Code:</label></td><td><input type="text" name="zip" required/></td>
         </tr></table>
         <br><br>
-        <input type="submit" onsubmit="submitForm();" name="submit" value="Register"/>
+        <input type="submit" onclick="submitForm();" value="Register"/>
     </form>
     <br>
     <p><span id="message"></span></p>
