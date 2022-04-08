@@ -1,0 +1,21 @@
+@charset "ISO-8859-1";
+
+body {
+	text-align: center;
+}
+
+table {
+	margin: auto;
+}
+
+iframe {
+	position: absolute;
+	top: -1px;
+	left: -1px;
+	width: 1px;
+	height:1px;
+}
+
+p {
+	color: red;
+}
