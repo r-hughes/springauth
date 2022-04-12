@@ -22,13 +22,12 @@ public class UserService {
 	}
 
 	public void updateUserInfo(User user) {
-		User savedUser = userRepository.findById(user.getFirstName()).orElseThrow(
-				() -> new RuntimeException(String.format("User not found in database", user.getFirstName())));
+		User savedUser = userRepository.findById(user.getEmail())
+				.orElseThrow(() -> new RuntimeException(String.format("User not found in database", user.getEmail())));
 
 		savedUser.setFirstName(user.getFirstName());
 		savedUser.setLastName(user.getLastName());
 		savedUser.setDateOfBirth(user.getDateOfBirth());
-		savedUser.setEmail(user.getEmail());
 		savedUser.setMobilePhone(user.getMobilePhone());
 		savedUser.setHomePhone(user.getHomePhone());
 		savedUser.setAddressLine1(user.getAddressLine1());

@@ -43,7 +43,7 @@ public class UserController {
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping("/{username}")
+	@GetMapping("/{id}")
 	@ResponseBody
 	public ResponseEntity<User> getUserInfo(@PathVariable String id) {
 		return ResponseEntity.ok(userService.getUserInfo(id));

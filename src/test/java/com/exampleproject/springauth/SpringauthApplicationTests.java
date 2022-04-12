@@ -30,12 +30,6 @@ class SpringauthApplicationTests {
 	private UserRepository repository;
 
 	@Test
-	public void getAllUsersTest() {
-		when(repository.findAll()).thenReturn(Stream.of(new User(), new User()).collect(Collectors.toList()));
-		assertEquals(2, service.getAllUsers().size());
-	}
-
-	@Test
 	public void addUserTest() {
 		User user = new User();
 		when(repository.save(user)).thenReturn(user);
@@ -43,11 +37,34 @@ class SpringauthApplicationTests {
 	}
 
 	@Test
+	public void updateUserInfoTest() {
+
+	}
+
+	@Test
+	public void getUserInfoTest() {
+		User user = new User();
+		String email = "123@gmail.com";
+		user.setEmail(email);
+		repository.save(user);
+		service.getUserInfo(email);
+		verify(repository, times(1)).findById(email);
+	}
+
+	@Test
+	public void getAllUsersTest() {
+		when(repository.findAll())
+				.thenReturn(Stream.of(new User(), new User(), new User()).collect(Collectors.toList()));
+		assertEquals(3, service.getAllUsers().size());
+	}
+
+	@Test
 	public void deleteUserTest() {
 		User user = new User();
-		user.setEmail("123@gmail.com");
-		service.deleteUser(user.getEmail());
-		verify(repository, times(1)).delete(user);
+		String email = "123@gmail.com";
+		user.setEmail(email);
+		service.deleteUser(email);
+		verify(repository, times(1)).deleteById(email);
 	}
 
 	@Test
