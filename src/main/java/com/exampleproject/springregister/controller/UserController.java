@@ -1,4 +1,4 @@
-package com.exampleproject.springauth.controller;
+package com.exampleproject.springregister.controller;
 
 import java.util.List;
 
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.exampleproject.springauth.model.User;
-import com.exampleproject.springauth.service.UserService;
+import com.exampleproject.springregister.model.User;
+import com.exampleproject.springregister.service.UserService;
 
 @RestController
 @RequestMapping("/users")

@@ -1,11 +1,11 @@
-package com.exampleproject.springauth.service;
+package com.exampleproject.springregister.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.exampleproject.springauth.model.User;
-import com.exampleproject.springauth.repository.UserRepository;
+import com.exampleproject.springregister.model.User;
+import com.exampleproject.springregister.repository.UserRepository;
 
 @Service
 public class UserService {
@@ -21,7 +21,7 @@ public class UserService {
 		return user;
 	}
 
-	public void updateUserInfo(User user) {
+	public User updateUserInfo(User user) {
 		User savedUser = userRepository.findById(user.getEmail())
 				.orElseThrow(() -> new RuntimeException(String.format("User not found in database", user.getEmail())));
 
@@ -36,11 +36,12 @@ public class UserService {
 		savedUser.setZip(user.getZip());
 
 		userRepository.save(savedUser);
+		return savedUser;
 	}
 
-	public User getUserInfo(String email) {
-		return userRepository.findByEmail(email)
-				.orElseThrow(() -> new RuntimeException(String.format("User not found in database", email)));
+	public User getUserInfo(String id) {
+		return userRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException(String.format("User not found in database", id)));
 	}
 
 	public List<User> getAllUsers() {

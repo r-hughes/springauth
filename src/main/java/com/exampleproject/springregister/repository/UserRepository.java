@@ -1,11 +1,11 @@
-package com.exampleproject.springauth.repository;
+package com.exampleproject.springregister.repository;
 
 import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
-import com.exampleproject.springauth.model.User;
+import com.exampleproject.springregister.model.User;
 
 public interface UserRepository extends MongoRepository<User, String> {
 

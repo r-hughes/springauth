@@ -1,54 +1,67 @@
 package com.exampleproject.springauth;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import com.exampleproject.springauth.model.User;
-import com.exampleproject.springauth.repository.UserRepository;
-import com.exampleproject.springauth.service.UserService;
+import com.exampleproject.springregister.model.User;
+import com.exampleproject.springregister.repository.UserRepository;
+import com.exampleproject.springregister.service.UserService;
 
-@RunWith(SpringRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
 class SpringauthApplicationTests {
 
-	@Autowired
+	@InjectMocks
 	private UserService service;
 
-	@MockBean
+	@Mock
 	private UserRepository repository;
+
+	@Mock
+	private User user;
+	private String email = "123@gmail.com";
+
+	@Before
+	public void init() {
+		user.setEmail(email);
+		user.setFirstName("John");
+		user.setLastName("Smith");
+	}
 
 	@Test
 	public void addUserTest() {
-		User user = new User();
 		when(repository.save(user)).thenReturn(user);
 		assertEquals(user, service.addUser(user));
 	}
 
+	// !!!
 	@Test
 	public void updateUserInfoTest() {
-
+		User newUser = user;
+		newUser.setFirstName("Bill");
+		when(repository.findById(email)).thenReturn(Optional.of(newUser));
+		assertNotEquals(user.getFirstName(), service.updateUserInfo(newUser).getFirstName());
 	}
 
 	@Test
 	public void getUserInfoTest() {
-		User user = new User();
-		String email = "123@gmail.com";
-		user.setEmail(email);
-		repository.save(user);
-		service.getUserInfo(email);
-		verify(repository, times(1)).findById(email);
+		when(repository.findById(email)).thenReturn(Optional.of(user));
+		assertEquals(service.getUserInfo(email).getEmail(), user.getEmail());
 	}
 
 	@Test
@@ -60,9 +73,6 @@ class SpringauthApplicationTests {
 
 	@Test
 	public void deleteUserTest() {
-		User user = new User();
-		String email = "123@gmail.com";
-		user.setEmail(email);
 		service.deleteUser(email);
 		verify(repository, times(1)).deleteById(email);
 	}
