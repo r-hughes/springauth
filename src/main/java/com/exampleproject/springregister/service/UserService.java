@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.exampleproject.springregister.dtos.AddUserDto;
 import com.exampleproject.springregister.model.User;
 import com.exampleproject.springregister.repository.UserRepository;
 
@@ -16,9 +17,8 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
-	public User addUser(User user) {
-		userRepository.insert(user);
-		return user;
+	public User addUser(AddUserDto addUserDto) {
+		return userRepository.save(addUserDto.toUser());
 	}
 
 	public User updateUserInfo(User user) {
@@ -28,12 +28,6 @@ public class UserService {
 		savedUser.setFirstName(user.getFirstName());
 		savedUser.setLastName(user.getLastName());
 		savedUser.setDateOfBirth(user.getDateOfBirth());
-		savedUser.setMobilePhone(user.getMobilePhone());
-		savedUser.setHomePhone(user.getHomePhone());
-		savedUser.setAddressLine1(user.getAddressLine1());
-		savedUser.setAddressLine2(user.getAddressLine2());
-		savedUser.setState(user.getState());
-		savedUser.setZip(user.getZip());
 
 		userRepository.save(savedUser);
 		return savedUser;

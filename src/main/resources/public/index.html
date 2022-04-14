@@ -1,65 +1,84 @@
 <!DOCTYPE html>
-<head>
-	<meta charset="ISO-8859-1">
-	<title>Home Page</title>
-	<link type="text/css" rel="stylesheet" href="css/style.css">
-	<script>
-	function submitForm() {
-		var xhr = new XMLHttpRequest();
-		xhr.open("POST", "/users"); 
-		xhr.onload = function(event) {
-			var status = event.target.status;
-			alert("Server responded with: " + status);
-			if (status < 400) {
-				document.getElementById("message").innerHTML = "Successfully registered new user =)";
-			} else {
-				document.getElementById("message").innerHTML = "Error adding new user =(";
-				return false;
-			}
-		};
-		var formData = new FormData(document.getElementById("myForm")); 
-		xhr.send(formData);
-		return true;
-	}
-	</script>
-</head>
-<body>
-	<iframe name="hidden"></iframe>
-    <h1>Register Here:</h1>
-    <form id="myForm" onsubmit="return submitForm();" target="hidden">
-    	<table><tr>
-        <td><label>First Name:</label></td><td><input type="text" name="firstName" required/></td>
-        </tr><tr>
-        <td><label>Last Name:</label></td><td><input type="text" name="lastName" required/></td>
-        </tr><tr>
-        <td><label>Date of Birth:</label></td><td><input type="text" name="dateOfBirth" required/></td>
-        </tr></table>
-        <br><br>
-        <h2>Contact Info</h2>
-        <table><tr>
-        <td><label>Email:</label></td><td><input type="email" name="email" required/></td>
-        </tr><tr>
-        <td><label>Mobile Phone:</label></td><td><input type="text" name="mobilePhone" required/></td>
-        </tr><tr>
-        <td><label>Home Phone:</label></td><td><input type="text" name="homePhone"/></td>
-        </tr></table>
-        <br><br>
-        <h2>Address</h2>
-        <table><tr>
-        <td><label>Address Line 1:</label></td><td><input type="text" name="addressLine1" required/></td>
-        </tr><tr>
-        <td><label>Address Line 2:</label></td><td><input type="text" name="addressLine2"/></td>
-        </tr><tr>
-        <td><label>State:</label></td><td><input type="text" name="state" required/></td>
-        </tr><tr>
-        <td><label>Zip Code:</label></td><td><input type="text" name="zip" required/></td>
-        </tr></table>
-        <br><br>
-        <input type="submit" value="Register"/>
-    </form>
-    <br>
-    <p><span id="message"></span></p>
-    <br>
-    <form method="get" action="/users"><input type="submit" value="All Users"/></form>
-</body>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="ISO-8859-1">
+		<title>Home Page</title>
+		<link type="text/css" rel="stylesheet" href="css/style.css">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	    <script>
+	        $(document).ready(function(){
+	            $("#userForm").on("submit", function(){
+	
+	                // Form values into key value array
+	                var values = {};
+	                $.each($(this).serializeArray(), function(){ values[this.name] = this.value; });
+	
+	                // Preparing AddUserDto
+	                var data = {
+	                    firstName: values["firstName"],
+	                    lastName: values["lastName"],
+	                    dateOfBirth: values["dateOfBirth"],
+	                	contactInfo: {
+	                        email: values["email"],
+	                        mobilePhone: values["mobilePhone"],
+	                		homePhone: values["homePhone"]
+	                    },
+	                    address: {
+	                    	addressLine1: values["addressLine1"],
+	                    	addressLine2: values["addressLine2"],
+	                        state: values["state"],
+	                        zip: values["zip"]
+	                    }
+	                };
+	
+	                // Convert it to JSON
+	                console.log(JSON.stringify(data));
+	                $('#PayloadForm [name="Data"]').val(JSON.stringify(data));
+	                $('#PayloadForm').submit();
+	                return false;
+	            });
+	        });
+		</script>
+	</head>
+	<body>
+		<iframe name="hidden"></iframe>
+	    <h1>Register Here:</h1>
+	    <form id="userForm">
+	    	<table><tr>
+	        <td><label>First Name:</label></td><td><input type="text" name="firstName" required/></td>
+	        </tr><tr>
+	        <td><label>Last Name:</label></td><td><input type="text" name="lastName" required/></td>
+	        </tr><tr>
+	        <td><label>Date of Birth:</label></td><td><input type="text" name="dateOfBirth" required/></td>
+	        </tr></table>
+	        <br><br>
+	        <h2>Contact Info</h2>
+	        <table><tr>
+	        <td><label>Email:</label></td><td><input type="email" name="email" required/></td>
+	        </tr><tr>
+	        <td><label>Mobile Phone:</label></td><td><input type="text" name="mobilePhone" required/></td>
+	        </tr><tr>
+	        <td><label>Home Phone:</label></td><td><input type="text" name="homePhone"/></td>
+	        </tr></table>
+	        <br><br>
+	        <h2>Address</h2>
+	        <table><tr>
+	        <td><label>Address Line 1:</label></td><td><input type="text" name="addressLine1" required/></td>
+	        </tr><tr>
+	        <td><label>Address Line 2:</label></td><td><input type="text" name="addressLine2"/></td>
+	        </tr><tr>
+	        <td><label>State:</label></td><td><input type="text" name="state" required/></td>
+	        </tr><tr>
+	        <td><label>Zip Code:</label></td><td><input type="text" name="zip" required/></td>
+	        </tr></table>
+	        <br><br>
+	        <input type="submit" value="Register"/>
+	    </form>
+	    <!-- This form is hidden -->
+	    <form action="/users" method="POST" id="PayloadForm" target="hidden"><input type="hidden" name="Data" value=""></form>
+	    <br>
+	    <p><span id="message"></span></p>
+	    <br>
+	    <form method="get" action="/users"><input type="submit" value="All Users"/></form>
+	</body>
 </html>

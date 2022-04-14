@@ -1,5 +1,14 @@
 package com.exampleproject.springregister.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+@Accessors(chain = true)
+@AllArgsConstructor
+@Getter
+@Setter
 public class ContactInfo {
 
 	private String email;
@@ -7,29 +16,5 @@ public class ContactInfo {
 	private String mobilePhone;
 
 	private String homePhone;
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getMobilePhone() {
-		return mobilePhone;
-	}
-
-	public void setMobilePhone(String mobilePhone) {
-		this.mobilePhone = mobilePhone;
-	}
-
-	public String getHomePhone() {
-		return homePhone;
-	}
-
-	public void setHomePhone(String homePhone) {
-		this.homePhone = homePhone;
-	}
 
 }
