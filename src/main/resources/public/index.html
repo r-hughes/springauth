@@ -59,16 +59,16 @@
 	        </tr><tr>
 	        <td><label>Last Name:</label></td><td><input type="text" name="lastName" required/></td>
 	        </tr><tr>
-	        <td><label>Date of Birth:</label></td><td><input type="text" name="dateOfBirth" required/></td>
+	        <td><label>Date of Birth:</label></td><td><input type="date" name="dateOfBirth" required/></td>
 	        </tr></table>
 	        <br><br>
 	        <h2>Contact Info</h2>
 	        <table><tr>
 	        <td><label>Email:</label></td><td><input type="email" name="email" required/></td>
 	        </tr><tr>
-	        <td><label>Mobile Phone:</label></td><td><input type="text" name="mobilePhone" required/></td>
+	        <td><label>Mobile Phone:</label></td><td><input type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" name="mobilePhone" required/></td>
 	        </tr><tr>
-	        <td><label>Home Phone:</label></td><td><input type="text" name="homePhone"/></td>
+	        <td><label>Home Phone:</label></td><td><input type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" name="homePhone"/></td>
 	        </tr></table>
 	        <br><br>
 	        <h2>Address</h2>
@@ -79,7 +79,7 @@
 	        </tr><tr>
 	        <td><label>State:</label></td><td><input type="text" name="state" required/></td>
 	        </tr><tr>
-	        <td><label>Zip Code:</label></td><td><input type="text" name="zip" required/></td>
+	        <td><label>Zip Code:</label></td><td><input type="number" name="zip" required/></td>
 	        </tr></table>
 	        <br><br>
 	        <input type="submit" value="Register"/>

@@ -17,6 +17,6 @@ public class Address {
 
 	private String state;
 
-	private String zip;
+	private int zip;
 
 }

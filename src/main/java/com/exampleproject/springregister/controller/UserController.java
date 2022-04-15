@@ -9,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,20 +39,22 @@ public class UserController {
 
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<User> addUser(@Valid @RequestBody AddUserDto addUserDto, Model model, BindingResult result) {
-		logger.info("User \'" + addUserDto.getContactInfo().getEmail() + "\' added to database");
-
+	public ResponseEntity<User> addUser(@Valid @RequestBody AddUserDto addUserDto, BindingResult result) {
 		if (result.hasErrors()) {
 			result.getAllErrors().forEach(err -> {
 				logger.info("Error adding user \'" + addUserDto.getContactInfo().getEmail() + "\' to database {}",
 						err.getDefaultMessage());
 			});
-			model.addAttribute("msg", "Error adding new user");
 		} else {
-			model.addAttribute("msg", "New user added successfully");
 			userService.addUser(addUserDto);
 		}
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		ResponseEntity<User> response = ResponseEntity.status(HttpStatus.CREATED).build();
+		if (response.getStatusCodeValue() < 400) {
+			logger.info("User \'" + addUserDto.getContactInfo().getEmail() + "\' added to database");
+		} else {
+			logger.info("Error adding user to database");
+		}
+		return response;
 	}
 
 	@PutMapping

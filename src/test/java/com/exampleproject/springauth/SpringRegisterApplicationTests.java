@@ -5,6 +5,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -44,34 +45,37 @@ class SpringRegisterApplicationTests {
 	@Mock
 	private Address address;
 
-	private String email = "123@gmail.com";
+	private String email = "msand@gmail.com";
+
+	@Mock
+	private User user;
 
 	@Before
 	public void init() {
 		contactInfo.setEmail(email);
 		userDto.setContactInfo(contactInfo);
 		userDto.setAddress(address);
+		user = userDto.toUser();
 	}
 
 	@Test
 	public void addUserTest() {
-		// when(repository.save(userDto.toUser())).thenReturn(userDto.toUser());
-		// assertEquals(userDto.toUser().getEmail(),
-		// service.addUser(userDto).getEmail());
 		service.addUser(userDto);
-		verify(repository, times(1)).save(userDto.toUser());
+		verify(repository, times(1)).insert(userDto.toUser());
 	}
 
 	// !!!
 	@Test
 	public void updateUserInfoTest() {
-
+		when(repository.findById(email)).thenReturn(Optional.of(user));
+		service.updateUserInfo(user);
+		verify(repository, times(1)).save(user);
 	}
 
-	// !!!
 	@Test
 	public void getUserInfoTest() {
-
+		when(repository.findById(email)).thenReturn(Optional.of(user));
+		assertEquals(user, service.getUserInfo(email));
 	}
 
 	@Test

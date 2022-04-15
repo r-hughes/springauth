@@ -1,6 +1,10 @@
 package com.exampleproject.springregister.dtos;
 
+import java.util.Date;
+
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 import com.exampleproject.springregister.model.Address;
@@ -22,11 +26,13 @@ public class AddUserDto {
 	@Size(min = 2, max = 30)
 	private String lastName;
 
-	@NotBlank
-	private String dateOfBirth;
+	@Past
+	private Date dateOfBirth;
 
+	@NotNull
 	private ContactInfo contactInfo;
 
+	@NotNull
 	private Address address;
 
 	public User toUser() {

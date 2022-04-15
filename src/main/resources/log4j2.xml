@@ -14,7 +14,7 @@
         <Logger name="com.exampleproject.springauth" level="debug" additivity="false">
             <AppenderRef ref="ConsoleAppender" />
         </Logger>
-
+ad
         <Root level="info">
             <AppenderRef ref="ConsoleAppender" />
         </Root>

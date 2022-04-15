@@ -1,5 +1,7 @@
 package com.exampleproject.springregister.model;
 
+import java.util.Date;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -20,7 +22,7 @@ public class User {
 
 	private String firstName;
 	private String lastName;
-	private String dateOfBirth;
+	private Date dateOfBirth;
 
 	private ContactInfo contactInfo;
 
