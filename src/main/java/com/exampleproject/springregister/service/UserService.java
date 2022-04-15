@@ -18,10 +18,11 @@ public class UserService {
 	}
 
 	public User addUser(AddUserDto addUserDto) {
-		return userRepository.save(addUserDto.toUser());
+		return userRepository.insert(addUserDto.toUser());
 	}
 
 	public User updateUserInfo(User user) {
+
 		User savedUser = userRepository.findById(user.getEmail())
 				.orElseThrow(() -> new RuntimeException(String.format("User not found in database", user.getEmail())));
 

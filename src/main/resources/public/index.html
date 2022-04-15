@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
-		<meta charset="ISO-8859-1">
+		<meta charset="UTF-8">
 		<title>Home Page</title>
 		<link type="text/css" rel="stylesheet" href="css/style.css">
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -30,11 +30,21 @@
 	                        zip: values["zip"]
 	                    }
 	                };
-	
-	                // Convert it to JSON
-	                console.log(JSON.stringify(data));
-	                $('#PayloadForm [name="Data"]').val(JSON.stringify(data));
-	                $('#PayloadForm').submit();
+	                
+	                $.ajax({
+	                    url: "/users",
+	                    dataType: "json",
+	                    contentType: "application/json;charset=utf-8",
+	                    type: "POST",
+	                    data: JSON.stringify(data),
+	                    error: function(result) {
+	                    	if (result.status < 400){
+	                    		alert("User successfully added");
+	                    	} else {
+	                    		alert("Error adding new user");
+	                    	}
+	                    }
+	                });
 	                return false;
 	            });
 	        });
@@ -74,11 +84,7 @@
 	        <br><br>
 	        <input type="submit" value="Register"/>
 	    </form>
-	    <!-- This form is hidden -->
-	    <form action="/users" method="POST" id="PayloadForm" target="hidden"><input type="hidden" name="Data" value=""></form>
-	    <br>
-	    <p><span id="message"></span></p>
-	    <br>
+	    <br><br>
 	    <form method="get" action="/users"><input type="submit" value="All Users"/></form>
 	</body>
 </html>
