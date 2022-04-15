@@ -40,21 +40,22 @@ public class UserController {
 	@PostMapping
 	@ResponseBody
 	public ResponseEntity<User> addUser(@Valid @RequestBody AddUserDto addUserDto, BindingResult result) {
+		String email = addUserDto.getContactInfo().getEmail();
 		if (result.hasErrors()) {
 			result.getAllErrors().forEach(err -> {
-				logger.info("Error adding user \'" + addUserDto.getContactInfo().getEmail() + "\' to database {}",
-						err.getDefaultMessage());
+				logger.info("Error adding user \'" + email + "\' to database {}", err.getDefaultMessage());
 			});
+			return ResponseEntity.badRequest().build();
 		} else {
-			userService.addUser(addUserDto);
+			if (userService.containsUser(email)) {
+				logger.info("User with email \'" + email + "\' already exists in database");
+				return ResponseEntity.badRequest().build();
+			} else {
+				logger.info("User \'" + email + "\' added to database");
+				userService.addUser(addUserDto);
+			}
 		}
-		ResponseEntity<User> response = ResponseEntity.status(HttpStatus.CREATED).build();
-		if (response.getStatusCodeValue() < 400) {
-			logger.info("User \'" + addUserDto.getContactInfo().getEmail() + "\' added to database");
-		} else {
-			logger.info("Error adding user to database");
-		}
-		return response;
+		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
 	@PutMapping
