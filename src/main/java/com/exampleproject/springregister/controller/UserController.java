@@ -43,12 +43,12 @@ public class UserController {
 		String email = addUserDto.getContactInfo().getEmail();
 		if (result.hasErrors()) {
 			result.getAllErrors().forEach(err -> {
-				logger.info("Error adding user \'" + email + "\' to database {}", err.getDefaultMessage());
+				logger.error("Error adding user \'" + email + "\' to database {}", err.getDefaultMessage());
 			});
 			return ResponseEntity.badRequest().build();
 		} else {
 			if (userService.containsUser(email)) {
-				logger.info("User with email \'" + email + "\' already exists in database");
+				logger.error("User with email \'" + email + "\' already exists in database");
 				return ResponseEntity.badRequest().build();
 			} else {
 				logger.info("User \'" + email + "\' added to database");

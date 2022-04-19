@@ -19,14 +19,14 @@ import lombok.Setter;
 public class AddUserDto {
 
 	@NotBlank
-	@Size(min = 2, max = 30)
+	@Size(min = 2, max = 30, message = "- First name must be between 2-30 characters ")
 	private String firstName;
 
 	@NotBlank
-	@Size(min = 2, max = 30)
+	@Size(min = 2, max = 30, message = "- Last name must be between 2-30 characters ")
 	private String lastName;
 
-	@Past
+	@Past(message = "- User cannot be born in the future! ")
 	private Date dateOfBirth;
 
 	@NotNull
