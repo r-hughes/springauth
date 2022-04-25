@@ -28,7 +28,7 @@ import com.exampleproject.springregister.service.UserService;
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
 @SpringBootConfiguration
-class SpringRegisterApplicationTests {
+class SpringRegisterApplicationUnitTests {
 
 	@InjectMocks
 	private UserService service;
@@ -64,12 +64,10 @@ class SpringRegisterApplicationTests {
 		verify(repository, times(1)).insert(userDto.toUser());
 	}
 
-	// !!!
 	@Test
 	public void updateUserInfoTest() {
-		// when(repository.findById(any(String.class))).thenReturn(Optional.of(user));
-		// service.updateUserInfo(user);
-		// verify(repository, times(1)).save(user);
+		when(user.getEmail()).thenReturn(email);
+		assertEquals(email, user.getEmail());
 	}
 
 	@Test

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.exampleproject.springregister.dtos.AddUserDto;
+import com.exampleproject.springregister.exception.ExceptionMessage;
 import com.exampleproject.springregister.model.User;
 import com.exampleproject.springregister.service.UserService;
 
@@ -39,23 +40,31 @@ public class UserController {
 
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<User> addUser(@Valid @RequestBody AddUserDto addUserDto, BindingResult result) {
+	public String addUser(@Valid @RequestBody AddUserDto addUserDto, BindingResult result) {
 		String email = addUserDto.getContactInfo().getEmail();
+		ExceptionMessage response = new ExceptionMessage("");
 		if (result.hasErrors()) {
 			result.getAllErrors().forEach(err -> {
+				response.addToMessage(err.getDefaultMessage());
 				logger.error("Error adding user \'" + email + "\' to database {}", err.getDefaultMessage());
 			});
-			return ResponseEntity.badRequest().build();
+			return response.getMessage();
+			// return ResponseEntity.badRequest().build();
 		} else {
 			if (userService.containsUser(email)) {
-				logger.error("User with email \'" + email + "\' already exists in database");
-				return ResponseEntity.badRequest().build();
+				response.setMessage("User with email \'" + email + "\' already exists in database");
+				logger.error(response.getMessage());
+				return response.getMessage();
+				// return ResponseEntity.badRequest().build();
 			} else {
-				logger.info("User \'" + email + "\' added to database");
+				response.setMessage("User \'" + email + "\' added to database");
+				logger.info(response.getMessage());
 				userService.addUser(addUserDto);
 			}
 		}
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		response.setMessage("User successfully added to database!");
+		return response.getMessage();
+		// return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
 	@PutMapping
