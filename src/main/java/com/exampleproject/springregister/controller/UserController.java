@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.exampleproject.springregister.RabbitMQConfig;
 import com.exampleproject.springregister.dtos.AddUserDto;
 import com.exampleproject.springregister.exception.ExceptionMessage;
 import com.exampleproject.springregister.model.User;
@@ -34,6 +36,9 @@ public class UserController {
 	private static final Logger logger = LogManager.getLogger(UserController.class);
 
 	private final UserService userService;
+
+	@Autowired
+	private RabbitTemplate template;
 
 	@Autowired
 	public UserController(UserService userService) {
@@ -50,12 +55,14 @@ public class UserController {
 				response.addToMessage(err.getDefaultMessage());
 				logger.error("Error adding user \'" + email + "\' to database {}", err.getDefaultMessage());
 			});
+			template.convertAndSend(RabbitMQConfig.EXCHANGE, RabbitMQConfig.ROUTING_KEY, response);
 			return response.getMessage();
 			// return ResponseEntity.badRequest().build();
 		} else {
 			if (userService.containsUser(email)) {
 				response.setMessage("User with email \'" + email + "\' already exists in database");
 				logger.error(response.getMessage());
+				template.convertAndSend(RabbitMQConfig.EXCHANGE, RabbitMQConfig.ROUTING_KEY, response);
 				return response.getMessage();
 				// return ResponseEntity.badRequest().build();
 			} else {
@@ -65,6 +72,7 @@ public class UserController {
 			}
 		}
 		response.setMessage("User successfully added to database!");
+		template.convertAndSend(RabbitMQConfig.EXCHANGE, RabbitMQConfig.ROUTING_KEY, response);
 		return response.getMessage();
 		// return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
